@@ -73,8 +73,10 @@ exports.login = async (req, res) => {
     if (isPasswordCorrect) {
       let token = jwt.sign(payload, process.env.JWT_SECRET);
 
-      existingUser.token = token;
-      existingUser.password = undefined;
+      let userResponse = { ...existingUser.toObject() };
+
+      userResponse.token = token;
+      userResponse.password = undefined;
 
       const options = {
         httpOnly: true,
@@ -83,7 +85,7 @@ exports.login = async (req, res) => {
       res.cookie("token", token, options).status(200).json({
         success: true,
         message: "User logged in successfully",
-        user: existingUser,
+        user: userResponse,
         token,
       });
     } else {
