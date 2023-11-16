@@ -1,5 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { CustomFormProps, FormData } from "../../components/types";
+import FetchApi from "../../utils/FetchApi.js";
+import urlHandlers from "../../constant/url-handlers.js";
 
 const CustomForm: React.FC<CustomFormProps> = ({ input_values = [] }) => {
   const [formData, setFormData] = useState<FormData>({
@@ -20,6 +22,15 @@ const CustomForm: React.FC<CustomFormProps> = ({ input_values = [] }) => {
     e.preventDefault();
     // Perform registration logic here, e.g., dispatch an action or make an API call
     console.log("Form data submitted:", formData);
+    const response: Promise<object> = FetchApi({
+      url: urlHandlers.api.auth.signup,
+      method: "POST",
+      body: formData,
+    });
+    console.log("Response:", response);
+    if (response.success) {
+      console.log("Registration successful");
+    }
   };
 
   return (
