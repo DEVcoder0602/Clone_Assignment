@@ -21,7 +21,7 @@ const CustomForm: React.FC<CustomFormProps> = ({ input_values = [] }) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     // Perform registration logic here, e.g., dispatch an action or make an API call
-    console.log("Form data submitted:", formData);
+    // console.log("Form data submitted:", formData);
     const response: Promise<object> = FetchApi({
       url: urlHandlers.api.auth.signup,
       method: "POST",
