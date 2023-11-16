@@ -28,9 +28,9 @@ const CustomForm: React.FC<CustomFormProps> = ({ input_values = [] }) => {
       body: formData,
     });
     console.log("Response:", response);
-    if (response.success) {
-      console.log("Registration successful");
-    }
+    // if (response.success ) {
+    //   console.log("Registration successful");
+    // }
   };
 
   return (
