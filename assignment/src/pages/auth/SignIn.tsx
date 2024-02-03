@@ -1,5 +1,15 @@
+import { LOGIN_INPUTS } from "../../constant/form-static-data";
+import CustomForm from "./CustomForm";
+
 const SignIn = () => {
-  return <div>SignIn</div>;
+  return (
+    <CustomForm
+      input_values={LOGIN_INPUTS}
+      heading="Login"
+      submit_button_text="Login"
+      redirectUrl="/"
+    />
+  );
 };
 
 export default SignIn;
