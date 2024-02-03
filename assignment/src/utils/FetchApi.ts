@@ -14,17 +14,18 @@ const FetchApi = async ({ url, method, body }: FetchApiProps) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: body ? JSON.stringify(body) : undefined, // Only include body if it's provided
+      body: JSON.stringify(body), // Only include body if it's provided
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    const responseData = await response.json();
+
+    if (!responseData.success) {
+      throw new Error(responseData.message);
     }
 
-    return response.json();
+    return responseData;
   } catch (error) {
-    console.error(error);
-    throw error;
+    return error;
   }
 };
 

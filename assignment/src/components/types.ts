@@ -12,4 +12,7 @@ export interface CustomFormProps {
     label: string;
     required: boolean;
   }[];
+  heading: string;
+  submit_button_text?: string;
+  redirectUrl: string;
 }

@@ -2,8 +2,16 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { CustomFormProps, FormData } from "../../components/types";
 import FetchApi from "../../utils/FetchApi.js";
 import urlHandlers from "../../constant/url-handlers.js";
+import { useNavigate } from "react-router-dom";
 
-const CustomForm: React.FC<CustomFormProps> = ({ input_values = [] }) => {
+const CustomForm: React.FC<CustomFormProps> = ({
+  input_values = [],
+  heading,
+  submit_button_text = "Register",
+  redirectUrl,
+}) => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -18,24 +26,32 @@ const CustomForm: React.FC<CustomFormProps> = ({ input_values = [] }) => {
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     // Perform registration logic here, e.g., dispatch an action or make an API call
     // console.log("Form data submitted:", formData);
-    const response: Promise<object> = FetchApi({
-      url: urlHandlers.api.auth.signup,
-      method: "POST",
-      body: formData,
-    });
-    console.log("Response:", response);
-    // if (response.success ) {
-    //   console.log("Registration successful");
-    // }
+    try {
+      const data = await FetchApi({
+        url:
+          heading === "Login"
+            ? urlHandlers.api.auth.login
+            : urlHandlers.api.auth.signup,
+        method: "POST",
+        body: formData,
+      });
+
+      if (data) {
+        alert(data.message);
+        navigate(redirectUrl);
+      }
+    } catch (err) {
+      console.error("Error during form submission:", err);
+    }
   };
 
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl mb-4">Sign up for freeCodeCamp</h2>
+      <h2 className="text-2xl mb-4">{heading} for freeCodeCamp</h2>
       <form onSubmit={handleSubmit}>
         {input_values.map((input, index) => (
           <div className="mb-4" key={index}>
@@ -59,7 +75,7 @@ const CustomForm: React.FC<CustomFormProps> = ({ input_values = [] }) => {
           type="submit"
           className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
         >
-          Register
+          {submit_button_text}
         </button>
       </form>
     </div>
